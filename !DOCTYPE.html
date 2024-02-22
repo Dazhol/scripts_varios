@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Botón Oculta Contenido y Contador Persistente</title>
+    <style>
+        body {
+            text-align: center;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            position: relative;
+        }
+
+        #contador {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            font-size: 20px;
+        }
+
+        img#mainImage {
+            max-width: calc(100% - 40px);
+            height: auto;
+            margin: 20px;
+        }
+
+        .contenido {
+            /* Contenido visible inicialmente */
+        }
+
+        .oculto {
+            display: none; /* Oculta elementos */
+        }
+
+        #gif {
+            display: none; /* GIF oculto inicialmente */
+        }
+
+        .botones {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            margin-top: 20px;
+        }
+
+        button {
+            transition: all 0.3s ease;
+            padding: 50px 100px;
+            font-size: 32px;
+            display: inline-flex;
+            justify-content: center;
+            align-items: center;
+            max-width: 300px;
+            max-height: 100px;
+            overflow: hidden;
+            white-space: nowrap;
+        }
+
+        #btnIzquierda {
+            background-color: lightblue;
+        }
+
+        #btnDerecha {
+            background-color: lightcoral;
+        }
+    </style>
+</head>
+<body>
+    <div id="contador">Clicks: 0</div>
+
+    <div class="contenido">
+        <img src="https://www.memecreator.org/static/images/memes/5205374.jpg" alt="Imagen Descriptiva" id="mainImage">
+        <div class="botones">
+            <button id="btnIzquierda">SI</button>
+            <button id="btnDerecha">NO</button>
+        </div>
+    </div>
+    <img src="https://media1.tenor.com/m/JrTijSIlEbgAAAAC/milk-and-mocha-hug.gif" id="gif" alt="GIF Cargando">
+
+    <script>
+        // Intenta recuperar el contador de localStorage, o inicia en 0 si no existe
+        let contador = localStorage.getItem('contadorClics') ? parseInt(localStorage.getItem('contadorClics'), 10) : 0;
+        document.getElementById('contador').innerText = `Clicks: ${contador}`;
+
+        document.getElementById('btnIzquierda').addEventListener('click', function() {
+            document.querySelector('.contenido').classList.add('oculto');
+            document.getElementById('gif').style.display = 'block';
+            contador++;
+            localStorage.setItem('contadorClics', contador); // Guarda el contador en localStorage
+            document.getElementById('contador').innerText = `Clicks: ${contador}`;
+        });
+
+        let escalaIzquierda = 1;
+        let escalaDerecha = 1;
+        const incremento = 0.05;
+        const maxIncremento = 1.5;
+        const minIncremento = 0.5;
+
+        document.getElementById('btnDerecha').addEventListener('click', function() {
+            if (escalaIzquierda < maxIncremento && escalaDerecha > minIncremento) {
+                escalaIzquierda += incremento;
+                escalaDerecha -= incremento;
+            }
+
+            document.getElementById('btnIzquierda').style.transform = `scale(${escalaIzquierda})`;
+            document.getElementById('btnDerecha').style.transform = `scale(${escalaDerecha})`;
+
+            var mensajes = ['Dale si', 'Presiona si amor', 'Dale al si amor', 'Ya perdoname', 'Amooooor', 'Perdoname pls :(', 'Amor dale que si', 'Yaaa dale al si', 'Amor perdoname si?', ':(', 'Amor por el bebe :('];
+            document.getElementById('btnDerecha').textContent = mensajes[Math.floor(Math.random() * mensajes.length)];
+        });
+    </script>
+</body>
+</html>
